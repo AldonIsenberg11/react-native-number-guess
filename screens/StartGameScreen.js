@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Alert, StyleSheet, TextInput, View } from "react-native"
+import { Alert, StyleSheet, TextInput, View, useWindowDimensions } from "react-native"
 
 import PrimaryButton from '../components/ui/PrimaryButton'
 import Title from "../components/ui/Title";
@@ -10,6 +10,8 @@ import InstructionText from "../components/ui/InstructionText";
 
 function StartGameScreen({onPickNumber}) {
     const [enteredNumber, setEnteredNumber] = useState('')
+
+    const {width, height} = useWindowDimensions() // This is to dynamically change the style on orientation flip
 
     function numberInputHandler(enteredText) {
         setEnteredNumber(enteredText)
@@ -34,8 +36,10 @@ function StartGameScreen({onPickNumber}) {
         onPickNumber(chosenNumber)
     }
 
+    const marginTopDistance = height < 380 ? 30 : 100
+
     return (
-        <View style={styles.rootContainer}>
+        <View style={[styles.rootContainer, { marginTop: marginTopDistance}]}>
             <Title>Guess my Number</Title>
             <Card>
                 <InstructionText>Enter a Number</InstructionText>
@@ -63,10 +67,12 @@ function StartGameScreen({onPickNumber}) {
 
 export default StartGameScreen;
 
+// const deviceHeight = Dimensions.get('window').height
+
 const styles = StyleSheet.create({
     rootContainer: {
         flex: 1,
-        marginTop: 100,
+        // marginTop: deviceHeight < 400 ? 30 : 100,
         alignItems: 'center',
     },
     numberInput: {
